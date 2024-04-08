@@ -11,23 +11,16 @@ using namespace std;
 #define PB push_back
 
 
-void move(queue<char> &from, queue<char> &to){
+void move(deque<char> &from, deque<char> &to){
 	while(!from.empty()){
-		to.push(from.front());
-		from.pop();
+		to.push_front(from.back());
+		from.pop_back();
 	}
 }
 
-void print(queue<char> q){
-	stack<char> st;
-	while(!q.empty()){
-		st.push(q.front());
-		q.pop();
-	}
-	
-	while(!st.empty()){
-		cout << st.top();
-		st.pop();
+void print(deque<char> q){
+	for(int i = 0; i < sz(q); i++){
+		cout << q[i];
 	}
 	cout << '\n';
 }
@@ -36,16 +29,16 @@ void solve(){
 	string a,b; cin >> a >> b;
 	
 	int n = sz(a);
-	queue<char> cur1,cur2,p1,p2;
+	deque<char> cur1,cur2,p1,p2;
 	for(int i = 0; i < n; i++){
-		cur1.push(a[i]);
-		cur2.push(b[i]);
+		cur1.push_back(a[i]);
+		cur2.push_back(b[i]);
 	}
 	
 	for(int i = 1; i <= 1000; i++){
 		char x = cur1.front(), y = cur2.front();
-		cur1.pop(); cur2.pop();
-		p1.push(x); p2.push(y);
+		cur1.pop_front(); cur2.pop_front();
+		p1.push_front(x); p2.push_front(y);
 		
 		if(x==y){
 			int rndm = random()/141%2;
@@ -66,6 +59,7 @@ void solve(){
 				return;
 			}
 			move(p1,cur1);
+			reverse(all(cur1));
 		}
 		if(cur2.empty()){
 			if(p2.empty()){
@@ -73,6 +67,7 @@ void solve(){
 				return;
 			}
 			move(p2,cur2);
+			reverse(all(cur2));
 		}
 	}
 	
